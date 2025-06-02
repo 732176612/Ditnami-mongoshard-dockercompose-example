@@ -1,0 +1,1 @@
+# Ditnami-mongoshard-dockercompose-example
