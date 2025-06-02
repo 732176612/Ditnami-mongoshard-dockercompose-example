@@ -1,0 +1,33 @@
+services:
+  mongos.falseendless.cn:
+    image: docker.xuanyuan.me/bitnami/mongodb-sharded:8.0
+    hostname: mongos.falseendless.cn  #换成你的域名
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongos.falseendless.cn  #换成你的域名
+      - MONGODB_SHARDING_MODE=mongos
+      - MONGODB_ROOT_PASSWORD=${MONGO_PASSWORD:-} #换成你的密码
+      - MONGODB_REPLICA_SET_KEY=falseendless
+      - MONGODB_PORT_NUMBER=27071
+      - MONGODB_CFG_REPLICA_SET_NAME=cfgrs
+      - MONGODB_CFG_PRIMARY_HOST=mongocfg.falseendless.cn  #换成你的域名
+      - MONGODB_CFG_PRIMARY_PORT_NUMBER=27072
+    ports:
+      - "27071:27071"
+    volumes:
+      - /www/server/mongoshard/mongos:/bitnami/mongodb  #换成你的本地挂载地址
+
+  mongocfg.falseendless.cn:
+    image: docker.xuanyuan.me/bitnami/mongodb-sharded:8.0
+    hostname: mongocfg.falseendless.cn  #换成你的域名
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongocfg.falseendless.cn  #换成你的域名
+      - MONGODB_SHARDING_MODE=configsvr
+      - MONGODB_ROOT_PASSWORD=${MONGO_PASSWORD:-} #换成你的密码
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=falseendless
+      - MONGODB_REPLICA_SET_NAME=cfgrs
+      - MONGODB_PORT_NUMBER=27072
+    ports:
+      - "27072:27072"
+    volumes:
+      - /www/server/mongoshard/cfg:/bitnami/mongodb  #换成你的本地挂载地址
