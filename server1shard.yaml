@@ -1,21 +1,16 @@
 services:
   mongo1.falseendless.cn:
     image: docker.xuanyuan.me/bitnami/mongodb-sharded:8.0
-    container_name: mongo1.falseendless.cn
     hostname: mongo1.falseendless.cn  #换成你的域名
     restart: always
-    networks:
-      default:
-    expose:
-      - 27017
     ports:
       - "27017:27017"
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongo1.falseendless.cn  #换成你的域名
       - MONGODB_REPLICA_SET_MODE=primary
       - MONGODB_ROOT_PASSWORD=${MONGO_PASSWORD:-}  #换成你的密码
-      - MONGODB_REPLICA_SET_NAME=rs0
       - MONGODB_REPLICA_SET_KEY=falseendless
+      - MONGODB_REPLICA_SET_NAME=rs0
       - BITNAMI_DEBUG=true
       - MONGODB_SHARDING_MODE=shardsvr
       - MONGODB_MONGOS_HOST=mongos.falseendless.cn  #换成你的域名
@@ -23,55 +18,48 @@ services:
       - MONGODB_CFG_PRIMARY_PORT_NUMBER=27072
     volumes:
       - /www/server/mongo7/primary:/bitnami/mongodb  #换成你的本地挂载地址
-
+ 
   mongo5.falseendless.cn:
     image: docker.xuanyuan.me/bitnami/mongodb-sharded:8.0
-    container_name: mongo5.falseendless.cn
     hostname: mongo5.falseendless.cn  #换成你的域名
     restart: always
-    networks:
-      default:
-    expose:
-      - 27018
     ports:
-      - "27018:27017"
+      - "27018:27018"
     environment:
+      - MONGODB_PORT_NUMBER=27018
+      - MONGODB_ADVERTISED_PORT_NUMBER=27018
       - MONGODB_ADVERTISED_HOSTNAME=mongo5.falseendless.cn  #换成你的域名
       - MONGODB_REPLICA_SET_MODE=secondary
       - MONGODB_INITIAL_PRIMARY_HOST=mongo4.falseendless.cn  #换成你的域名
       - MONGODB_INITIAL_PRIMARY_PORT_NUMBER=27017
       - MONGODB_INITIAL_PRIMARY_ROOT_USER=root
       - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=${MONGO_PASSWORD:-} #换成你的密码
-      - MONGODB_REPLICA_SET_NAME=rs1
       - MONGODB_REPLICA_SET_KEY=falseendless
+      - MONGODB_REPLICA_SET_NAME=rs1
       - MONGODB_SHARDING_MODE=shardsvr
       - MONGODB_MONGOS_HOST=mongos.falseendless.cn  #换成你的域名
       - MONGODB_MONGOS_PORT_NUMBER=27071
       - MONGODB_CFG_PRIMARY_PORT_NUMBER=27072
-    volumes:
-      - /www/server/mongo7/secondary:/bitnami/mongodb  #换成你的本地挂载地址
 
   mongo6.falseendless.cn:
     image: docker.xuanyuan.me/bitnami/mongodb-sharded:8.0
-    container_name: mongo6.falseendless.cn
     hostname: mongo6.falseendless.cn  #换成你的域名
     restart: always
-    networks:
-      default:
-    expose:
-      - 27019
     ports:
-      - "27019:27017"
+      - "27019:27019"
     environment:
+      - MONGODB_PORT_NUMBER=27019
+      - MONGODB_ADVERTISED_PORT_NUMBER=27019
       - MONGODB_ADVERTISED_HOSTNAME=mongo6.falseendless.cn  #换成你的域名
-      - MONGODB_REPLICA_SET_MODE=arbiter
+      - MONGODB_REPLICA_SET_MODE=secondary
       - MONGODB_INITIAL_PRIMARY_HOST=mongo4.falseendless.cn  #换成你的域名
       - MONGODB_INITIAL_PRIMARY_PORT_NUMBER=27017
       - MONGODB_INITIAL_PRIMARY_ROOT_USER=root
       - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=${MONGO_PASSWORD:-} #换成你的密码
-      - MONGODB_REPLICA_SET_NAME=rs1
       - MONGODB_REPLICA_SET_KEY=falseendless
+      - MONGODB_REPLICA_SET_NAME=rs1
       - MONGODB_SHARDING_MODE=shardsvr
       - MONGODB_MONGOS_HOST=mongos.falseendless.cn  #换成你的域名
       - MONGODB_MONGOS_PORT_NUMBER=27071
       - MONGODB_CFG_PRIMARY_PORT_NUMBER=27072
+     
